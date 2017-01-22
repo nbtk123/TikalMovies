@@ -26,7 +26,11 @@ public class DetailsFragment extends Fragment {
     private TextView tvOverview;
     private ImageView imageView;
 
-    MovieData movieData;
+    private MovieData movieData;
+
+    public void setMovieData(MovieData movieData) {
+        this.movieData = movieData;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,21 @@ public class DetailsFragment extends Fragment {
         if (getArguments() != null) {
             movieData = getArguments().getParcelable(ARG_MOVIE_DATA);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ARG_MOVIE_DATA, movieData);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            movieData = savedInstanceState.getParcelable(ARG_MOVIE_DATA);
+            bindMovieData();
+        }
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Nullable
@@ -51,7 +70,7 @@ public class DetailsFragment extends Fragment {
         return root;
     }
 
-    private void bindMovieData() {
+    public void bindMovieData() {
         if (movieData != null) {
             tvTitle.setText(movieData.getTitle());
             tvOverview.setText(movieData.getOverview());

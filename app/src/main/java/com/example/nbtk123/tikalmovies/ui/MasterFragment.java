@@ -34,6 +34,18 @@ public class MasterFragment extends Fragment implements RVMoviesAdapter.OnItemCl
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        moviesAdapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        moviesAdapter.onViewStateRestored(savedInstanceState);
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(moviesAdapter);
         super.onDestroy();
@@ -58,12 +70,21 @@ public class MasterFragment extends Fragment implements RVMoviesAdapter.OnItemCl
 
     @Override
     public void onItemClicked(MovieData data) {
-        DetailsFragment detailsFragment = new DetailsFragment();
 
-        Bundle args = new Bundle();
-        args.putParcelable(DetailsFragment.ARG_MOVIE_DATA, data);
-        detailsFragment.setArguments(args);
+        Fragment fragment = getFragmentManager().findFragmentByTag(DetailsFragment.TAG);
 
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment, DetailsFragment.TAG).addToBackStack(null).commit();
+        if (fragment != null) {
+            //Tablet
+            DetailsFragment detailsFragment = (DetailsFragment) fragment;
+            detailsFragment.setMovieData(data);
+            detailsFragment.bindMovieData();
+        } else {
+            //Phone
+            DetailsFragment detailsFragment = new DetailsFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(DetailsFragment.ARG_MOVIE_DATA, data);
+            detailsFragment.setArguments(args);
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment, DetailsFragment.TAG).addToBackStack(null).commit();
+        }
     }
 }

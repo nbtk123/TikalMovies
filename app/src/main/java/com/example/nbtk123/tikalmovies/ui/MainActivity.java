@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Verify phone-mode
-        if (findViewById(R.id.fragment_container) != null) {
+        if (findViewById(R.id.tablet_master_fragment_container) == null) {
             MasterFragment masterFragment = new MasterFragment();
             masterFragment.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction().add(R.id.fragment_container, masterFragment, MasterFragment.TAG).commit();

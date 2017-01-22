@@ -1,6 +1,7 @@
 package com.example.nbtk123.tikalmovies.ui;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
  */
 
 public class RVMoviesAdapter extends RecyclerView.Adapter<RVMoviesAdapter.RVHolder> {
+
+    private static final String KEY_MOVIE_DATA = "KEY_MOVIE_DATA";
 
     private ArrayList<MovieData> mData;
     private WeakReference<Context> mContext;
@@ -77,6 +80,18 @@ public class RVMoviesAdapter extends RecyclerView.Adapter<RVMoviesAdapter.RVHold
     @Subscribe
     public void onEvent(MovieDataRequest.EventMovieDataRequestError event) {
         Log.d("VolleyError", event.toString());
+    }
+
+    public void onSaveInstanceState(Bundle bundle) {
+        if (bundle != null) {
+            bundle.putParcelableArrayList(KEY_MOVIE_DATA, mData);
+        }
+    }
+
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mData = savedInstanceState.getParcelableArrayList(KEY_MOVIE_DATA);
+        }
     }
 
     public static class RVHolder extends RecyclerView.ViewHolder {
