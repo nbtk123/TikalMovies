@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.nbtk123.tikalmovies.R;
 import com.example.nbtk123.tikalmovies.data.MovieData;
+import com.example.nbtk123.tikalmovies.network.MovieDataFethcer;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,7 +30,8 @@ public class MasterFragment extends Fragment implements RVMoviesAdapter.OnItemCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        moviesAdapter = new RVMoviesAdapter(getActivity(), this);
+        moviesAdapter = new RVMoviesAdapter(getActivity(), this, savedInstanceState);
+
         EventBus.getDefault().register(moviesAdapter);
     }
 
@@ -39,11 +41,11 @@ public class MasterFragment extends Fragment implements RVMoviesAdapter.OnItemCl
         moviesAdapter.onSaveInstanceState(outState);
     }
 
-    @Override
+    /*@Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         moviesAdapter.onViewStateRestored(savedInstanceState);
         super.onViewStateRestored(savedInstanceState);
-    }
+    }*/
 
     @Override
     public void onDestroy() {

@@ -44,8 +44,13 @@ public class RVMoviesAdapter extends RecyclerView.Adapter<RVMoviesAdapter.RVHold
         }
     };
 
-    public RVMoviesAdapter(Context context, OnItemClickListener listener) {
-        mData = new ArrayList<>();
+    public RVMoviesAdapter(Context context, OnItemClickListener listener, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null && savedInstanceState.getParcelableArrayList(KEY_MOVIE_DATA) != null) {
+            mData = savedInstanceState.getParcelableArrayList(KEY_MOVIE_DATA);
+        } else {
+            mData = new ArrayList<>();
+        }
         mContext = new WeakReference<>(context);
         externalClickListener = listener;
     }
